@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+     <script type="text/javascript" src="d3/d3.min.js"></script>
+ </head>
+   <body>
+   </body>
+   <script>
+   var lineData = [
+ {"x":1,"y":4},
+{"x":20,"y":34},
+{"x":40,"y":14},
+{"x":60,"y":74},
+{"x":80,"y":84},
+{"x":100,"y":10},
+{"x":120,"y":56},
+{"x":140,"y":125}];
+
+var lineFunction = d3.line()
+.x(function(d){return d.x;})
+.y(function(d){return d.y;});
+
+var svgContainer = d3.select("body")
+.append("svg")
+.attr("width",200)
+.attr("height",200);
+
+var lineGraph = svgContainer.append("path")
+.attr("d", lineFunction(lineData))
+.attr("stroke","blue")
+.attr("stroke-width",3)
+.attr("fill","none");
+
+   </script>
+ </html>

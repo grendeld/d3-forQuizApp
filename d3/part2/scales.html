@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+     <script type="text/javascript" src="d3/d3.min.js"></script>
+ </head>
+   <body>
+     <p></p>
+   </body>
+   <script>
+var initialData = [0,1000,2000,3000,4000,5000,6000,7000,7500,9000,9200,10000];
+var scaledBy100Data = [];
+var minDataPoint = d3.min(initialData);
+var maxDataPoint = d3.max(initialData);
+
+var linearScale = d3.scaleLinear().domain([minDataPoint,maxDataPoint]).range([0,100]);
+var i;
+for ( i = 0; i < initialData.length; i++)
+{
+  scaledBy100Data[i] = linearScale(initialData[i]);
+}
+alert(scaledBy100Data);
+   </script>
+   </html>

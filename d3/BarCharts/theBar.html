@@ -1,0 +1,124 @@
+<!DOCtype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="d3/d3.min.js"></script>
+  <style>
+  .bar{
+    fill:CornflowerBlue;
+  }
+  .bar:hover{
+    fill:yellow;
+  }
+  .axis--x path{
+    display: none;
+  }
+  .tooltip {
+            background: #eee;
+            box-shadow: 0 0 5px #999999;
+            color: #333;
+            display: none;
+            font-size: 12px;
+            left: 130px;
+            padding: 10px;
+            position: absolute;
+            text-align: center;
+            top: 95px;
+            width: 80px;
+            z-index: 10;
+          }
+  </style>
+</head>
+<body>
+  <div id="barChart">
+    <svg width="800" height="500"></svg>
+  </div>
+</body>
+<script>
+(function (d3){
+  'use strict';
+  var barSvg = d3.select("svg"),
+      margin = {top: 20, right: 20, bottom: 30, left: 40},
+      width = +barSvg.attr("width") - margin.left - margin.right,
+      height = +barSvg.attr("height") - margin.top - margin.bottom;
+
+  var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+      y = d3.scaleLinear().rangeRound([height, 0]);
+
+  var g = barSvg.append('g')
+      .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+
+      //tooltip
+      var toolTip = d3.select('#barChart')
+      .append('div')
+      .attr('class','tooltip');
+
+      toolTip.append('div')
+      .attr('class','class');
+
+      toolTip.append('div')
+      .attr('class','averageMark');
+
+      toolTip.append('div')
+      .attr('class','percent');
+
+  d3.csv("quiz1Stats.csv",function(d){
+    d.averageMark = +d.averageMark;
+    return d;
+  }, function(error, data){
+    if (error) throw error;
+
+    x.domain(data.map(function(d){return d.class;}));
+    y.domain([0,d3.max(data, function(d){return d.averageMark;})]);
+
+    g.append("g")
+       .attr("class", "axis_axis--x")
+       .attr("transform","translate(0," + height + ")")
+       .call(d3.axisBottom(x));
+
+    g.append("g")
+       .attr("class", "axis axis--y")
+       .call(d3.axisLeft(y).ticks(10,"%"))
+       .append("text")
+       .attr("transform","rotate(-90)")
+       .attr("y",6)
+       .attr("dy","0.72em")
+       .attr("text-anchor","end")
+       .text("Average Mark");
+
+    var bars = g.selectAll(".bar")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("class","bar")
+    .attr("x", function(d) {return x(d.class);})
+    .attr("y",function(d){return y(d.averageMark);})
+    .attr("width",x.bandwidth())
+    .attr("height",function(d){return height - y(d.averageMark);});
+
+    //mouseover function
+    bars.on('mouseover', function(d) {
+      var total = d3.sum(data.map(function(d){
+        return d.averageMark;  // updated from return d.count;
+      }));
+      var percent = Math.round(1000 * d.averageMark / total) / 10;
+      toolTip.select('.class').html(d.class);
+      toolTip.select('.averageMark').html(d.averageMark +'%');
+      //toolTip.select('.percent').html(percent + '%');
+      toolTip.style('display', 'block');
+            });
+
+    bars.on('mouseout', function(d) {
+     toolTip.style('display','none');
+            });
+
+    bars.on('mousemove', function(d) {
+           tooltip.style('top', (d3.event.layerY + 10) + 'px')
+             .style('left', (d3.event.layerX + 10) + 'px');
+         });
+
+  });
+})(window.d3);
+
+</script>
+</html>
