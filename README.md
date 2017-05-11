@@ -1,3 +1,5 @@
 # d3-forQuizApp
- some D3 projects, from basic svg appending to bar/pie charts eventually using d3.json to fill charts with data for a potential quiz application
-I CGHANGED THIS BRANCH
+THIS BRANCH OS FOR WORKING ON THE AUTH STUFF.
+I HAVE A PROBLEM WITH THE INTAKE.PHP
+CANT GET IT TO DO SOMETHING 
+PLEASE TAKE A LOOK???
