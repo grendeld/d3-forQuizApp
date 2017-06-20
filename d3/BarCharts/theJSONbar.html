@@ -24,7 +24,7 @@
     -moz-border-radius: 10px;
     border-radius: 10px;
     -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-    -mox-box-shadow: 4px 4px 4px 10px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 4px 4px 4px 10px rgba(0, 0, 0, 0.4);
     box-shadow: 4px 4px 10px rbga(0, 0, 0, 0.4) pointer-events: none;
     z-index: 10;
   }
@@ -47,6 +47,8 @@
       height = +barSvg.attr("height") - margin.top - margin.bottom;
 
   var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+  //adjust bar 'thickness' with padding value,
+  //scaleBand takes the width and gives the x axis that scale
       y = d3.scaleLinear().rangeRound([height, 0]);
 
   var g = barSvg.append('g')
@@ -71,8 +73,8 @@
   d3.json("intakes.json", function(error, data){
     if (error) throw error;
 
-    x.domain(data.map(function(d){return d.IntakeName;})); //IntakeName
-    y.domain([0,d3.max(data, function(d){return d.count;})]); //count
+    x.domain(data.map(function(d){return d.x;})); //IntakeName
+    y.domain([0,d3.max(data, function(d){return d.y;})]); //count
 
     g.append("g")
        .attr("class", "axis_axis--x")
@@ -94,10 +96,10 @@
     .enter()
     .append("rect")
     .attr("class","bar")
-    .attr("x", function(d) {return x(d.IntakeName);})
-    .attr("y",function(d){return y(d.count);})
+    .attr("x", function(d) {return x(d.x);})
+    .attr("y",function(d){return y(d.y);})
     .attr("width",x.bandwidth())
-    .attr("height",function(d){return height - y(d.count);});
+    .attr("height",function(d){return height - y(d.y);});
 
     //mouseover function
     bars.on('mouseover', function(d) {
@@ -111,8 +113,8 @@
       toolTip.style("left",x +"px")
       .style("top",y+"px");
 
-      toolTip.select('.IntakeName').html(d.IntakeName);
-      toolTip.select('.count').html(d.count +" Students Enrolled");
+      toolTip.select('.IntakeName').html(d.x);
+      toolTip.select('.count').html(d.y +" Students Enrolled");
       toolTip.style('display', 'block');
             });
 

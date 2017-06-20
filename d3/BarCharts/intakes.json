@@ -1,5 +1,5 @@
 [
-  {"IntakeName":"BA25","count":2},
-  {"IntakeName":"SD25","count":1},
-  {"IntakeName":"SD26","count":1}
+  {"x":"BA25","y":2},
+  {"x":"SD25","y":1},
+  {"x":"SD26","y":1}
 ]

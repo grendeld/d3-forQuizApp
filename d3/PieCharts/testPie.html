@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
-<!-- UPDATED TO INTERACTIVE DONUT CHART -->
+<!-- UPDATED TO INTERACTIVE DONUT CHART
+Added drop-shadow -->
  <html>
    <head>
      <meta charset="utf-8">
@@ -39,6 +40,11 @@
                  width: 80px;
                  z-index: 10;
                }
+       .shadow {
+                -webkit-filter: drop-shadow( 3px 10px 3px rgba(0,0,0,.5) );
+                filter: drop-shadow( 3px 10px 3px rgba(0,0,0,.5) );
+               }
+
        h1{
 
        }
@@ -70,8 +76,11 @@
    .append('svg')
    .attr('height',height)
    .attr('width',width)
+   .attr('class','shadow')
    .append('g')
    .attr('transform','translate(' + (width/2) + ', ' + (height/2) + ')');
+
+
 
    var arc = d3.arc().innerRadius(radius - donutWidth).outerRadius(radius);
 
@@ -93,6 +102,7 @@
    toolTip.append('div')
    .attr('class','percent');
 
+
    //data
    d3.csv('rawData.csv', function(error, dataset)
           {
@@ -109,6 +119,7 @@
    .attr('d',arc)
    .attr('fill',function(d, i){ return color(d.data.label); })
    .each(function(d) { this._current = d; }); // added
+
 
    //mouseover function
    path.on('mouseover', function(d) {
@@ -200,14 +211,17 @@
    .attr('y',legendRectSize - legendSpacing)
    .text(function(d){return d;});
 
+
 });
-//going for shadow
- /*var defs = mySvg.append('defs');
-var clipPath = defs.append('clipPath')
-.attr('id','clip-circle')
-.attr('r',radius)
-.attr('cy',height/2-10) //XXX not sure
-.attr('cx',width/2 -10);
+
+//going for shadow, not using, styles with css instead
+ /*var defs = mySvg.append('defs')
+
+ var clipPath = defs.append('clipPath')
+ .attr('id','clip-circle')
+ .attr('r',radius)
+ .attr('cy',height/2-10) //XXX not sure
+ .attr('cx',width/2 -10);
 
 var filter = defs.append('filter')
 .attr('id','drop-shadow')
